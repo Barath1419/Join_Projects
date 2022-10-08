@@ -1,2 +1,2 @@
-this folder is for Doing company related tasks together
+This folder is for Doing company related tasks together
 Dhinakara AND Barath
