@@ -1,5 +1,8 @@
 import config as server
 from flask import jsonify , request
+from main2 import app
+from flask import render_template as rt
+from werkzeug.utils import secure_filename
 
 data_base = server.data_base_connection()
 
@@ -15,6 +18,7 @@ def get_all_products():
     product_details = cursor.fetchall()
     cursor.close()
     return jsonify({'products':product_details})
+
 
 def create_new_product():
     if request.method == "POST":
@@ -52,4 +56,16 @@ def get_Products(id):
     cursor.close()
     return jsonify({'product' : single_product})
 
-
+def get_product_images(id):
+  if request.method == 'POST':
+    image = request.files['file']
+    image.save(app.config['UPLAOD_FOLDER']+secure_filename(image.filename))
+    path = app.config['UPLAOD_FOLDER']+secure_filename(image.filename)
+    cursor = data_base.cursor(dictionary=True)
+    image_data = open(path, 'rb').read()
+    sql = f"update products set productImage=%s where id={id}"
+    cursor.execute(sql, (image_data,))
+    data_base.commit()
+    cursor.close()
+    return "Image Uploaded"
+  return rt('home.html')

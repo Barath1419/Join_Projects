@@ -2,6 +2,7 @@ import products
 from flask import Flask
 
 app=Flask(__name__)
+
 app.config['UPLAOD_FOLDER'] = 'Images/'
 
 @app.route('/')
@@ -28,10 +29,9 @@ def update_product(id):
 def get_Products(id):
     return products.get_Products(id)
 
-@app.route("/products/images/<int:id>" , methods = ['GET' , 'POST'])
+@app.route("/product/image/<int:id>", methods=['GET' , 'POST'])
 def get_product_images(id):
     return products.get_product_images(id)
 
 if __name__=="__main__":
    app.run(debug=True)
-
